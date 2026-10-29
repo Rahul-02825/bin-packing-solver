@@ -1,5 +1,6 @@
 import sys
 import time
+from bisect import bisect_left
 
 from bp_approx import ffd, parse_args, read_instance, report, validate
 from bp_exact import l2
@@ -52,6 +53,42 @@ def improve(C, bins, deadline):
     return [b for b in bins if b]
 
 
+def mbs_prime(C, w, deadline, cap=1000):
+    rest = sorted(w, reverse=True)
+    bins = []
+    while rest:
+        if time.monotonic() >=deadline:
+            return None
+        head = rest.pop(0)
+        cand = [x for x in rest if x <= C - head]
+        neg = [-x for x in cand]
+        best = {"room": C - head, "set": [], "steps": 0}
+
+        def search(i, room, chosen):
+
+            best["steps"] += 1
+            if room < best["room"]:
+                best["room"], best["set"] = room, list(chosen)
+            if room == 0 or best["steps"] >= cap:
+                return
+            for j in range(bisect_left(neg, -room, i), len(cand)):
+
+                if j >i and cand[j] == cand[j - 1]:
+                    continue
+                chosen.append(j)
+                search(j +1, room - cand[j], chosen)
+                chosen.pop()
+                if best["room"] == 0 or best["steps"] >= cap:
+                    return
+
+        search(0,C -head, [])
+        items = [cand[j] for j in best["set"]]
+        for x in items:
+            rest.remove(x)
+        bins.append([head] + items)
+    return bins
+
+
 def solve(C, w, limit=10.0):
     validate(C, w)
     if not w:
@@ -60,14 +97,15 @@ def solve(C, w, limit=10.0):
     sys.setrecursionlimit(max(sys.getrecursionlimit(), len(w) + 100))
     w = sorted(w, reverse=True)
     n, S, minw = len(w), sum(w), w[-1]
-    best, lb = improve(C, ffd(C, w), deadline), l2(C, w)
+    base, alt = ffd(C, w), mbs_prime(C, w, deadline)
+    start = alt if alt is not None and len(alt) < len(base) else base
+    best, lb = improve(C, start, deadline), l2(C, w)
     a = [0] * n
 
     def feasible(k):
         r = [C] * k
         slack = k * C - S
         nodes = [0]
-
         def dfs(i, dead):
             nodes[0] += 1
             if nodes[0] % 1024 == 1 and time.monotonic() >= deadline:
