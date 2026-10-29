@@ -17,6 +17,14 @@ This project implements four solvers for 1D bin packing, from a fast approximati
 
 `bp.py` is the default entry point. It runs the exact solver and prints only the bin count. `bp_arcflow.py` is the only program that needs a third-party package; the others use the standard library only.
 
+## How I used AI
+
+AI tools were used to support me not for the actual development, primarily to refactor parts of the code while preserving the implementation logic I developed. They also helped with utility components such as `run_cases.py` and the test-case execution functionality.
+
+And since arcflow needs a third party package I slighly relied on the usage and working for it.All other logic is done by me unless some refactoring.
+
+The algorithm selection, problem-solving approach, and core implementation logic were developed by me. I reviewed and tested the resulting code to verify its behavior.
+
 ## Why one solution is not enough
 
 Bin packing is NP-hard in the strong sense, so no known algorithm is both guaranteed optimal and fast on every input. Each approach gives something up, which is why this project ships several and does not pick one:
