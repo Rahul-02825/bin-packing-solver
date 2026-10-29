@@ -1,0 +1,40 @@
+run: 2026-10-29 07:41:47   cases: testcases.txt   timeout: 600s   hybrid budget: 5s   arcflow limit: 600s   python: 3.14.7
+
+case              expected  exact          approx              hybrid         arcflow
+----------------  --------  -------------  ------------------  -------------  -------------
+example           2         2 PASS 0.02s   2 PASS 0.02s        2 PASS 0.02s   2 PASS 0.02s
+empty             0         0 PASS 0.02s   0 PASS 0.02s        0 PASS 0.02s   0 PASS 0.02s
+one_item          1         1 PASS 0.02s   1 PASS 0.02s        1 PASS 0.02s   1 PASS 0.02s
+equals_capacity   1         1 PASS 0.02s   1 PASS 0.02s        1 PASS 0.02s   1 PASS 0.02s
+two_full_items    2         2 PASS 0.02s   2 PASS 0.02s        2 PASS 0.02s   2 PASS 0.02s
+all_fit_one_bin   1         1 PASS 0.02s   1 PASS 0.02s        1 PASS 0.02s   1 PASS 0.02s
+each_separate     4         4 PASS 0.02s   4 PASS 0.02s        4 PASS 0.02s   4 PASS 0.02s
+repeated_weights  2         2 PASS 0.02s   2 PASS 0.02s        2 PASS 0.02s   2 PASS 0.02s
+three_per_bin     3         3 PASS 0.02s   3 PASS 0.02s        3 PASS 0.02s   3 PASS 0.02s
+sum_bound_low     3         3 PASS 0.02s   3 PASS 0.02s        3 PASS 0.02s   3 PASS 0.02s
+ffd_fails         5         5 PASS 0.02s   6 FAIL (+1) 0.02s   5 PASS 0.02s   5 PASS 0.18s
+mbs_paper         3         3 PASS 0.02s   3 PASS 0.02s        3 PASS 0.02s   3 PASS 0.02s
+trap1             4         4 PASS 0.02s   5 FAIL (+1) 0.02s   4 PASS 0.02s   4 PASS 0.10s
+trap2             5         5 PASS 0.02s   6 FAIL (+1) 0.02s   5 PASS 0.02s   5 PASS 0.11s
+trap3             3         3 PASS 0.02s   4 FAIL (+1) 0.02s   3 PASS 0.02s   3 PASS 0.10s
+trap4             5         5 PASS 0.02s   6 FAIL (+1) 0.02s   5 PASS 0.02s   5 PASS 0.10s
+trap5             5         5 PASS 0.02s   6 FAIL (+1) 0.02s   5 PASS 0.02s   5 PASS 0.10s
+trap6             4         4 PASS 0.02s   5 FAIL (+1) 0.02s   4 PASS 0.02s   4 PASS 0.10s
+medium1           9         9 PASS 0.02s   10 FAIL (+1) 0.02s  9 PASS 0.02s   9 PASS 0.20s
+medium2           8         8 PASS 0.02s   9 FAIL (+1) 0.02s   8 PASS 0.02s   8 PASS 0.12s
+medium3           13        13 PASS 0.02s  14 FAIL (+1) 0.02s  13 PASS 0.02s  13 PASS 0.18s
+medium4           10        10 PASS 0.02s  11 FAIL (+1) 0.02s  10 PASS 0.02s  10 PASS 0.12s
+oversize_item     invalid   REJECTED PASS  REJECTED PASS       REJECTED PASS  REJECTED PASS
+zero_weight       invalid   REJECTED PASS  REJECTED PASS       REJECTED PASS  REJECTED PASS
+zero_capacity     invalid   REJECTED PASS  REJECTED PASS       REJECTED PASS  REJECTED PASS
+wrong_count       invalid   REJECTED PASS  REJECTED PASS       REJECTED PASS  REJECTED PASS
+not_a_number      invalid   REJECTED PASS  REJECTED PASS       REJECTED PASS  REJECTED PASS
+
+Summary (passed / judged):
+  exact: 27/27
+  approx: 16/27
+  hybrid: 27/27
+  arcflow: 27/27
+
+PASS = bin count equals the expected optimum. FAIL (+n) = n bins above it.
+approx is a heuristic, so a FAIL there is expected. exact should never FAIL unless it times out.

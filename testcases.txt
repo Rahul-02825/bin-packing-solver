@@ -1,0 +1,37 @@
+# name | expected | n C w1 w2 ... wn
+# expected = proven minimum number of bins, or "invalid" (input must be rejected: exit code 1, nothing on stdout)
+
+# small named cases (answers worked out by hand)
+example          | 2 | 5 10 1 2 3 4 5
+empty            | 0 | 0 10
+one_item         | 1 | 1 10 4
+equals_capacity  | 1 | 1 10 10
+two_full_items   | 2 | 2 10 10 10
+all_fit_one_bin  | 1 | 4 10 2 3 4 1
+each_separate    | 4 | 4 10 6 6 6 6
+repeated_weights | 2 | 4 10 3 3 3 3
+three_per_bin    | 3 | 9 9 3 3 3 3 3 3 3 3 3
+sum_bound_low    | 3 | 3 10 6 6 6
+ffd_fails        | 5 | 9 20 9 6 19 8 6 17 5 4 17
+mbs_paper        | 3 | 6 9 5 5 5 3 3 3
+
+# small cases where greedy FFD uses one bin too many (answers checked by brute force)
+trap1            | 4 | 9 13 6 6 8 5 12 4 5 3 2
+trap2            | 5 | 11 22 5 20 9 9 11 3 4 14 6 6 19
+trap3            | 3 | 8 29 10 13 11 8 6 2 9 27
+trap4            | 5 | 10 11 7 10 10 5 3 6 2 5 3 2
+trap5            | 5 | 11 25 8 21 24 18 12 7 14 7 4 5 4
+trap6            | 4 | 9 17 2 2 6 6 11 5 10 9 16
+
+# medium cases (answers from the exact solver; FFD uses one bin too many on each)
+medium1          | 9  | 23 100 26 28 29 41 43 27 49 47 37 50 48 28 34 31 46 32 48 50 38 27 49 33 31
+medium2          | 8  | 21 100 49 43 31 31 35 25 27 29 42 25 41 27 43 40 42 31 38 27 37 31 45
+medium3          | 13 | 31 100 43 29 30 44 48 26 26 33 42 46 44 29 48 33 48 43 26 28 47 37 32 30 44 41 26 48 36 46 41 43 43
+medium4          | 10 | 24 100 45 34 28 41 50 26 25 37 49 42 50 38 40 36 47 49 32 43 48 27 38 45 32 28
+
+# invalid input (every program must print "invalid input" on stderr and exit 1)
+oversize_item    | invalid | 1 10 11
+zero_weight      | invalid | 2 10 0 5
+zero_capacity    | invalid | 1 0 3
+wrong_count      | invalid | 5 10 1 2
+not_a_number     | invalid | 2 10 a 5

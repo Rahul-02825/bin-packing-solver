@@ -1,0 +1,12 @@
+run: 2026-10-29 07:49:00   cases: testcases_large.txt   timeout: 600s   hybrid budget: 5s   arcflow limit: 600s   python: 3.14.7
+
+case        expected  arcflow
+----------  --------  ---------------
+planted_20  20        20 PASS 0.22s
+planted_40  40        40 PASS 406.46s
+
+Summary (passed / judged):
+  arcflow: 2/2
+
+PASS = bin count equals the expected optimum. FAIL (+n) = n bins above it.
+approx is a heuristic, so a FAIL there is expected. exact should never FAIL unless it times out.
